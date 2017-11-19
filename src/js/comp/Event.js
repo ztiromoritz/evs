@@ -1,29 +1,67 @@
 import Vue from 'vue';
+import Users from './Users';
+
+const moveShadow = ([s_x, s_y, s_w, s_h], [t_x, t_y, t_w, t_h]) => {
+  return new Promise((resolve) => {
+    const $shadow = document.createElement('div');
+    $shadow.classList.add('shadow');
+    $shadow.style = `width: ${s_w}px; height: ${s_h}px; top: ${s_y}px; left: ${s_x}px;`;
+    document.body.appendChild($shadow);
+    const listener = () => {
+      $shadow.removeEventListener("transitionend", listener);
+      resolve($shadow);
+    };
+    $shadow.addEventListener("transitionend", listener, false);
+    setTimeout(() => {
+      $shadow.style = `width: ${t_w}px; height: ${t_h}px; top: ${t_y}px; left: ${t_x}px;`;
+    }, 100);
+  })
+};
+
 
 export default Vue.component('event', {
   template: `<div ref="node" 
-                class="event tile tile-centered"
+                class="event chip"
                 v-bind:class="{invisible: !event.visible, current: current, read: read}">
-                
-                  <div class="tile-icon">
-                    <div class="example-tile-icon">
-                      <i class="icon icon-arrow-right centered"></i>
-                    </div>
-                  </div>
-                  
-
-   
-                  <div class="tile-content">
-                    <div class="tile-title">{{event.caption}}</div>
-                  </div>
-                
+                <figure class="avatar avatar-sm" v-bind:class="figureClass" data-initial="">
+                   <i class="twa twa-2x" v-bind:class="iconClass" style="margin: 8px;"></i>    
+                </figure>
+                    {{event.caption}}
                 
                 
                 </div>`,
   props: ['event', 'current', 'read'],
+  computed: {
+    iconClass: function () {
+      const classes = {
+        'twa': true,
+        'twa-tlg': true
+      };
+      const user = Users[this.event.user];
+
+      if (user) {
+        classes[user.iconClass] = true;
+      }else {
+        classes[Users['Default'].iconClass] = true;
+      }
+      return classes;
+    },
+    figureClass: function(){
+      const classes = {};
+      const user = Users[this.event.user];
+      if (user) {
+        classes[user.bgClass] = true;
+      }else{
+        classes[Users['Default'].bgClass] = true;
+      }
+      return classes;
+    }
+  },
   methods: {
-    getRect: function () {
-      return this.$refs['node']
+    moveShadowFromEventTo: function (target) {
+      const source_rect = this.$refs['node'].getBoundingClientRect();
+      const source = [source_rect.left, source_rect.top, source_rect.width, source_rect.height];
+      return moveShadow(source, target);
     }
   },
   mounted: function () {
@@ -31,37 +69,17 @@ export default Vue.component('event', {
       //animate source
       const [s_x, s_y] = this.event.source;
       const t_rect = this.$refs['node'].getBoundingClientRect();
-      const $shadow = document.createElement('div');
-      $shadow.classList.add('shadow');
-      $shadow.style = `width: 10px; height: 10px; top: ${s_y}px; left: ${s_x}px;`;
-      document.body.appendChild($shadow);
-      $shadow.addEventListener("transitionend", () => {
-        if ($shadow.parentNode) {//fires for every property
+
+      const source = [s_x, s_y, 10, 10];
+      const target = [t_rect.left, t_rect.top, t_rect.width, t_rect.height];
+      moveShadow(source, target).then(
+        ($shadow) => {
           this.event.visible = true;
           document.body.removeChild($shadow);
-        }
-      }, false);
-      setTimeout(() => {
-        $shadow.style = `width: ${t_rect.width}px;
-                            height: ${t_rect.height}px;
-                            top: ${t_rect.top}px;
-                            left: ${t_rect.left}px;`;
-      }, 100);
+        });
     } else {
       this.event.visible = true
     }
   }
 });
-/*Vue.component('event',{
-template : `<div class="event" v-bind:class="{invisible: isInvisible}">{{caption}}</div>`
-props:['caption'],
-data: {
-  isInvisible : false
-},
-methods : {
-  getRect : function(){
-    return this.$refs['node']
-  }
-}
-});*/
 

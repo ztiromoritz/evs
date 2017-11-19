@@ -1,111 +1,95 @@
-import ace from 'brace';
-
+import './css/slides.css';
+import './css/styles.css';
+import './css/twemoji-awesome.css';
+//import 'font-awesome/css/font-awesome.min.css';
 import 'spectre.css';
 import 'spectre.css/dist/spectre-icons.css';
 
-import 'brace/mode/javascript';
-import 'brace/theme/monokai';
-import beautify from 'js-beautify';
 
 import './js/comp/Event';
+import './js/comp/ExampleSettings';
+import './js/comp/Tabs';
+
+import './js/slides/Slide';
+import './js/slides/Slides';
+
+import Editor from './js/comp/Editor';
 import eventList from './js/comp/EventList';
+import exampleSelect from './js/comp/ExampleSelect';
 import executor from './js/Executor';
 import rawState from './js/comp/RawState';
+import view from './js/comp/View';
 import commands from './js/comp/Commands';
+import debug  from './js/comp/Debugger';
+import editorButtons  from './js/comp/EditorButtons';
 
-import {Map} from 'immutable';
-
-
-console.log("adsf", beautify);
-const editor = ace.edit("editor");
-//editor.setTheme("ace/theme/monokai");
-editor.getSession().setMode("ace/mode/javascript");
-editor.setOptions({
-  tabSize: 2,
-  fontSize: "20pt"
-});
-/*
-var actor = eval(editor.getValue());
-*/
-const eventStore = [];
-let state = Map();
-
-commands.eventStore=eventStore;
-commands.eventList=eventList;
-console.log(eventStore);
-
-const $controls = document.querySelector('#controls');
-
-const pay_in_10 = $controls.appendChild(document.createElement('button'));
-pay_in_10.innerHTML = 'Pay in 10€!';
-pay_in_10.addEventListener('click', (e) => {
-
-  const newEvent = {
-    type: 'PAYED_IN',
-    amount: 10,
-    caption: "PAYED_IN 10€"
-  };
-
-  eventStore.push(newEvent);
-  eventList.addEvent(Object.assign({}, newEvent, {source: [e.pageX, e.pageY]}));
-
-});
+const editor = new Editor(document.querySelector('#editorPane'));
 
 
-const $pay_out_3 = $controls.appendChild(document.createElement('button'));
-$pay_out_3.innerHTML = 'Pay out 3€!';
-$pay_out_3.classList.add('btn');
-
-$pay_out_3.addEventListener('click', (e) => {
-
-  const newEvent = {
-    type: 'PAYED_OUT',
-    amount: 10,
-    caption: "PAYED_OUT 10€",
-  };
-  eventStore.push(newEvent);
-  eventList.addEvent(Object.assign({}, newEvent, {source: [e.pageX, e.pageY]}));
-
-});
-
-
+let state = {};
 let current = 0;
-const $consume_event = $controls.appendChild(document.createElement('button'));
-$consume_event.innerHTML = 'Consume next event!';
-$consume_event.addEventListener('click', function () {
+
+commands.eventList=eventList;
+
+
+const consumeNextEvent = function () {
 
   //Fake mail
   //var notification = new Notification("You have a mail",{body: "Hey there! You've been notified!"});
 
 
-  if (eventStore.length > current) {
+  if (eventList.getLength() > current) {
     console.log("execute");
-    state = executor.execute(editor.getValue(), eventStore[current], state);
+    const $state = document.querySelector('#state');
+
+    const target_rect = $state.getBoundingClientRect();
+    const target = [target_rect.left, target_rect.top, target_rect.width, target_rect.height];
+    const currentEventComponent = eventList.getComponent(current);
+
+    state = executor.handleEvent(editor.getValue(), eventList.getEvent(current), state);
     current++;
     eventList.setCurrent(current);
+
+    currentEventComponent.moveShadowFromEventTo(target).then(($shadow)=>{
+        console.log($shadow.style + "opacity: 0.3;");
+        $shadow.style.opacity = 0;
+        const listener = () => {
+          $shadow.removeEventListener("transitionend",listener);
+          rawState.value = Object.assign({},state);
+          view.value = Object.assign({},state);
+          document.body.removeChild($shadow);
+        };
+        $shadow.addEventListener("transitionend", listener, false);
+    });
+
   }else{
     console.log('log complettely read.');
   }
-  console.log("state",  state.toJSON());
-  rawState.value = state.toJSON();
+};
 
+debug.addCommand({
+  caption: 'Consume next event!',
+  execute : consumeNextEvent
+});
+
+editorButtons.addCommand({
+  caption: 'ff',
+  execute : ()=>editor.format()
+});
+
+editorButtons.addCommand({
+  caption: '+',
+  execute : ()=>editor.incFontSize()
+});
+
+editorButtons.addCommand({
+  caption: '-',
+  execute : ()=>editor.decFontSize()
 });
 
 
-const format = function () {
+editor.format();
 
-
-
-  console.log(beautify);
-  editor.setValue(beautify(editor.getValue(), {indent_size: 1}));
-  editor.clearSelection();
-};
-
-
-const $beautify = $controls.appendChild(document.createElement('button'));
-$beautify.innerHTML = 'Format code!';
-$beautify.addEventListener('click',format);
-format();
 
 
 

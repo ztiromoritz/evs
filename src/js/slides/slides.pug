@@ -1,0 +1,123 @@
+section(data-example)
+    div.big
+        h2 Event Sourcing
+//section
+    //h1 Event Sourcing 1
+    //div.main
+      //  ul
+      //      li CQRS
+      //      li Fpp
+        //img(src="static/bttf.gif")
+
+
+section
+    h1 Active Record
+    div.main
+        span Mapping Object <-> DataBase ROW
+        ul
+            li CRUD operations on Domain Objects
+            li Current state of each object in a database row
+            li Advanced OR-Mapping possible
+            li Keep the current state
+            li sometimes a last changed field
+
+section
+    div.big
+        h2 Is this, how we do it in FirstSpirit ?
+    //img.big (src="static/think2.jpg")
+
+section
+    h1 Let's have a look
+    div.left
+        img(src="static/think2.jpg")
+
+section
+    h1 Let's have a look
+    div.left
+        img(src="static/think2.jpg")
+    div.right
+        ul
+            li Generate Released
+            li Generate Current
+            li Revisions
+
+section
+    h1 Let's have a look
+    div.left
+        img(src="static/think2.jpg")
+    div.right
+        h2 But, how???
+
+section
+    h1 Let's have a look
+    div.left
+        img(src="static/think2.jpg")
+    div.right
+        ul
+            li Only write changes
+            li Never delete
+            li Never change existing values
+
+section
+    h1 Compare
+    div.left
+        span Account in Active Record
+    div.right
+        span List of Events
+
+
+section
+    h1 Demo 1
+    div.main
+        ul
+            li only Events, no users
+
+
+section
+    h1 Events
+    div.left
+        img(src="static/fakten.jpg")
+    div.right
+        i "Fakten, Fakten, Fakten!"
+        br
+        i "Facts, Facts, Facts!"
+
+
+section
+    h1 Next 4
+
+section(data-example)
+    h1 DEMO
+
+section
+    h1 Commands vs Events
+        ul
+            li Commands will be executed once
+            li Commands create side effects
+        ul
+            li Events are immutable
+            li
+
+section
+    h1 Snapshot
+        ul
+            li
+
+
+section
+    h1 Event "Bus"
+        div.main
+            img(src="")
+
+section
+    h1 Complexity
+    div.left
+        ul
+            li Events create Commands
+            li Commands create Events
+            li Event Driven vs Record Drive
+
+    div.right
+        img(src="static/hermione.png")
+//deleted-flag als beispiel
+//last changed als beispiel wie man in AR mit historie umgeht.

@@ -20,6 +20,9 @@ module.exports = {
       inject : "body"
     })
   ],
+  devServer: {
+    //contentBase: path.join(__dirname, "static"),
+  },
   module: {
     rules : [
       {
@@ -29,6 +32,10 @@ module.exports = {
       {
         test: /\.scss$/,
         loader: ["style-loader","css-loader","sass-loader"]
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug-loader'
       }
     ]
   }

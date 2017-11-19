@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -8,44 +7,32 @@
     <meta name="description" content="Event Source Simulator">
     <meta name="author" content="Moritz Rebbert">
 
-    <link rel="stylesheet" href="./src/css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Source+Sans+Pro" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <script src="https://twemoji.maxcdn.com/twemoji.min.js"></script>-->
 </head>
 
 <body>
 <div class="wrapper">
+    <div id="example">
+    </div>
+    <div id="tabs"></div>
     <div id="commands" class="card">Commands</div>
-    <div id="events" class="card">
-    </div>
-    <div id="state">State:<pre>{balance: 0}</pre></div>
+    <div id="events" class="card"></div>
+    <div id="state"></div>
     <div id="controls"></div>
-    <div id="editor" class="card">
-        onEvent = (event, state) => {
-        return {
-        'PAYED_IN': () => state.update('balance', inc(event.amount)),
-        'PAYED_OUT': () => state.update('balance', dec(event.amount))
-        }[event.type]();
-        };
-
+    <div id="editor">
+        <div id="editorPane" class="card editorPane"></div>
+        <div id="editorButtons" class="buttons">
+            <button class="btn btn-sm"><i>F</i></button>
+        </div>
     </div>
-
     <div id="view" class="card"><b>View</b></div>
 
+    <div id="globalBorder"></div>
+    <div id="actorBorder"></div>
+    <div id="slides"></div>
 </div>
-
-<!--
-
-        const onEvent = (event)=>{
-  handle(event).with({
-    'PAYED_IN' : _=>state.incBalance(_.value),
-    'PAYED_OUT': _=>state.decBalance(_.value)
-  });
-}
-
--->
-
-<!--
-<script src="js/index.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
--->
 </body>
 </html>
