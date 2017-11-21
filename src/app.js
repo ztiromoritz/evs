@@ -8,7 +8,7 @@ import 'spectre.css/dist/spectre-icons.css';
 
 import './js/comp/Event';
 import './js/comp/ExampleSettings';
-import './js/comp/Tabs';
+import tabs from './js/comp/Tabs';
 
 import './js/slides/Slide';
 import './js/slides/Slides';
@@ -17,19 +17,43 @@ import Editor from './js/comp/Editor';
 import eventList from './js/comp/EventList';
 import exampleSelect from './js/comp/ExampleSelect';
 import executor from './js/Executor';
-import rawState from './js/comp/RawState';
-import view from './js/comp/View';
+import './js/comp/RawState';
+import './js/comp/View';
 import commands from './js/comp/Commands';
-import debug  from './js/comp/Debugger';
-import editorButtons  from './js/comp/EditorButtons';
+import debug from './js/comp/Debugger';
+import editorButtons from './js/comp/EditorButtons';
+
+import currentState from './js/CurrentState';
 
 const editor = new Editor(document.querySelector('#editorPane'));
 
+//Fire current state, after all elements are initialized.
+exampleSelect.emitState();
+tabs.emitState();
+currentState.emit();
 
-let state = {};
-let current = 0;
+const fadeOutShadow = function ($shadow) {
 
-commands.eventList=eventList;
+  if(!$shadow){
+    return Promise.resolve();
+  }
+  return new Promise(resolve => {
+
+    $shadow.style.opacity = 0;
+    const listener = () => {
+      $shadow.removeEventListener("transitionend", listener);
+      document.body.removeChild($shadow);
+      resolve();
+    };
+    $shadow.addEventListener("transitionend", listener, false);
+  });
+};
+
+
+//let state = {};
+//let current = 0;
+
+commands.eventList = eventList;
 
 
 const consumeNextEvent = function () {
@@ -38,59 +62,60 @@ const consumeNextEvent = function () {
   //var notification = new Notification("You have a mail",{body: "Hey there! You've been notified!"});
 
 
-  if (eventList.getLength() > current) {
-    console.log("execute");
-    const $state = document.querySelector('#state');
+  const $state = document.querySelector('#state');
 
-    const target_rect = $state.getBoundingClientRect();
-    const target = [target_rect.left, target_rect.top, target_rect.width, target_rect.height];
-    const currentEventComponent = eventList.getComponent(current);
+  currentState.transform(({state, current}) => {
 
-    state = executor.handleEvent(editor.getValue(), eventList.getEvent(current), state);
-    current++;
-    eventList.setCurrent(current);
+    if (eventList.getLength() <= current) {
+      console.log('Event log completely read');
+      return {state, current};
+    }
 
-    currentEventComponent.moveShadowFromEventTo(target).then(($shadow)=>{
-        console.log($shadow.style + "opacity: 0.3;");
-        $shadow.style.opacity = 0;
-        const listener = () => {
-          $shadow.removeEventListener("transitionend",listener);
-          rawState.value = Object.assign({},state);
-          view.value = Object.assign({},state);
-          document.body.removeChild($shadow);
-        };
-        $shadow.addEventListener("transitionend", listener, false);
-    });
+    const eventComponent = eventList.getComponent(current);
+    const event = eventList.getEvent(current);
 
-  }else{
-    console.log('log complettely read.');
-  }
+    // visual transform and emit effect
+    eventComponent
+      .moveShadowFromEventTo($state)
+      .then(fadeOutShadow)
+      .then(() => { currentState.emit(); });
+      //.then(() => { eventList.setCurrent(currentState.current); });
+
+    // data transform
+    return {
+      state: executor.handleEvent(editor.getValue(), event, state),
+      current: current + 1
+    }
+  });
 };
 
 debug.addCommand({
   caption: 'Consume next event!',
-  execute : consumeNextEvent
+  execute: consumeNextEvent
+});
+
+debug.addCommand({
+  caption: 'Reset current state',
+  execute : () => currentState.clear()
 });
 
 editorButtons.addCommand({
   caption: 'ff',
-  execute : ()=>editor.format()
+  execute: () => editor.format()
 });
 
 editorButtons.addCommand({
   caption: '+',
-  execute : ()=>editor.incFontSize()
+  execute: () => editor.incFontSize()
 });
 
 editorButtons.addCommand({
   caption: '-',
-  execute : ()=>editor.decFontSize()
+  execute: () => editor.decFontSize()
 });
 
 
 editor.format();
-
-
 
 
 //Fake mail

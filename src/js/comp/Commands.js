@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import Settings from '../Settings';
+import InternalEvents from '../InternalEvents';
 
 const commands = new Vue({
   el: '#commands',
@@ -20,7 +22,7 @@ const commands = new Vue({
                     </div>
                   </div>
                   
-                  <div class="form-group">
+                  <div v-if="enableUser" class="form-group">
                     <div class="col-3">
                       <label class="form-label lable-sm" for="input-example-1">User</label>
                     </div>
@@ -34,14 +36,13 @@ const commands = new Vue({
                  
                 </form>
                 
-                <div class="card-icon">
-                    <i class="fa fa-exclamation fa-2x" aria-hidden="true"></i>
-                </div>
+               
               </div>`,
   data: {
     current: 0,
     amount: 11,
     user:'',
+    enableUser : false,
     commands: [
       {
         caption: "Pay out", execute: (e) => {
@@ -67,6 +68,17 @@ const commands = new Vue({
       }
     ],
     eventList: null
+  },
+  methods : {
+    setExample(name){
+      const {enableUser} = Settings.getSettings(name);
+      this.enableUser = enableUser;
+    }
+  },
+  created(){
+    InternalEvents.subscribeOnExampleChanges(({name})=>{
+      this.setExample(name);
+    });
   }
 });
 

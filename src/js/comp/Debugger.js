@@ -5,10 +5,6 @@ const debug = new Vue({
   template: `<div id="controls" class="card">
                 <b>Debugger</b><br>
                 <button class="btn btn-primary btn-custom" v-for="command in commands" v-on:click="command.execute">{{command.caption}}</button><br>
-                
-                <div class="card-icon">
-                    <i class="fa fa-bug fa-2x" aria-hidden="true"></i>
-                </div>
               </div>`,
   data: {
     current: 0,
@@ -19,9 +15,6 @@ const debug = new Vue({
       this.commands.push(command);
     }
   }
-
-
-
 
 });
 

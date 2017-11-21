@@ -3,7 +3,8 @@ import Rx from 'rxjs/Rx';
 
 const Events = {
   EXAMPLE_CHANGED: 'example-changed',
-  TAB_CHANGED: 'tab-changed'
+  TAB_CHANGED: 'tab-changed',
+  STATE_CHANGED : 'state-changed'
 };
 
 // ?????
@@ -26,21 +27,33 @@ class InternalEvents {
     this.subject.next({type: Events.TAB_CHANGED, name});
   }
 
+  stateChanged({state,current}){
+    this.subject.next({type: Events.STATE_CHANGED, state: Object.assign({},state), current});
+  }
+
   subscribe(cb, thisArg) {
     return this.subject.subscribeOnNext(cb, thisArg)
   }
 
-  subscribeOnExampleChanges(cb, thisArg) {
+  subscribeOnExampleChanges(cb) {
     return this.subject
       .filter(_ => _.type === Events.EXAMPLE_CHANGED)
       .subscribe(cb);
   }
 
-  subscribeOnTabChanges(cb, thisArg) {
+  subscribeOnTabChanges(cb) {
     return this.subject
       .filter(_ => _.type === Events.TAB_CHANGED)
       .subscribe(cb);
   }
+
+  subscribeOnStateChanged(cb){
+    return this.subject
+      .filter(_ => _.type === Events.STATE_CHANGED)
+      .subscribe(cb)
+  }
+
+
 
 
 }

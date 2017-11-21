@@ -10,16 +10,20 @@ section(data-example)
         //img(src="static/bttf.gif")
 
 
+
+
 section
     h1 Active Record
-    div.main
-        span Mapping Object <-> DataBase ROW
+    div.left
         ul
-            li CRUD operations on Domain Objects
-            li Current state of each object in a database row
-            li Advanced OR-Mapping possible
-            li Keep the current state
+            li CRUD operations for domain objects
+            li Current state in database
+            li Advanced OR-Mapping
+            li Binding value
             li sometimes a last changed field
+            li sometimes a deleted flag
+    div.right
+        img(src="static/activeRecord.svg", width="60%")
 
 section
     div.big
@@ -30,6 +34,14 @@ section
     h1 Let's have a look
     div.left
         img(src="static/think2.jpg")
+
+section
+    h1 Let's have a look
+    div.left
+        img(src="static/think2.jpg")
+
+    div.right
+        b TODO: screenshot of RepositoryViewer
 
 section
     h1 Let's have a look
@@ -59,6 +71,20 @@ section
             li Never change existing values
 
 section
+    h1 Another example
+    div.main
+        ul
+            li CVS
+            li SVN
+            li GIT
+
+section
+    div.big
+        h2 Can we do more than just content or source control?
+        h2 ---> TODO: Build our complete Persistence of the demain model based on this.
+        h2 Events
+
+section
     h1 Compare
     div.left
         span Account in Active Record
@@ -76,11 +102,25 @@ section
 section
     h1 Events
     div.left
-        img(src="static/fakten.jpg")
+        img(src="static/fakten.jpg", width="100%")
+
+section
+    h1 Events
+    div.left
+        img(src="static/fakten.jpg", width="100%")
     div.right
+        span Events are:
+        br
         i "Fakten, Fakten, Fakten!"
         br
         i "Facts, Facts, Facts!"
+        br
+        br
+        span ... single source of truth
+        br
+        br
+        span ... immutable in order and value
+
 
 
 section
@@ -106,11 +146,43 @@ section
 
 section
     h1 Event "Bus"
-        div.main
-            img(src="")
+    div.left
+            img(src="static/busCat.gif", width="100%")
+    div.right
+        ul
+            li Components share event store
+            li Subscription
+            li But no consumption
+            li Start from scratch
+
+
+section
+    div.big
+        h2 Start from scratch ...
+        img(src="static/hmm.png")
+        h2 ...  but what about performance
+section
+    h1 Snapshots and recovery
 
 section
     h1 Complexity
+    div.main
+        img(src="static/complexity.svg", height="100%")
+
+section
+    h1 Scalability
+    div.main
+        img(src="static/scalability.svg", height="100%")
+
+
+section
+    h1 "What's cool about that"
+    div.main
+        ul
+            li
+
+section
+    h1 Challenges
     div.left
         ul
             li Events create Commands
@@ -118,6 +190,12 @@ section
             li Event Driven vs Record Drive
 
     div.right
-        img(src="static/hermione.png")
+        img(src="static/hermione.png", width="100%")
+
+section
+    div.main
+        h2 Examples: https://evss-87e09.firebaseapp.com
+
+
 //deleted-flag als beispiel
 //last changed als beispiel wie man in AR mit historie umgeht.

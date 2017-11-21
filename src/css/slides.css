@@ -1,6 +1,6 @@
 
 .slides > section,
-.slides{
+.slides {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -13,17 +13,18 @@
     transition: all 0.3s linear;
 }
 
-.slides{
+.slides {
     transition: all 0.3s linear;
 }
 
 .slides.example > section {
     transform: scale(1);
 }
-.slides.example{
+
+.slides.example {
     border: solid 10px grey;
-   /* pointer-events: none;*/
-   /* opacity: 0; */
+    /* pointer-events: none;*/
+    /* opacity: 0; */
     top: auto;
     left: auto;
     display: block;
@@ -32,10 +33,10 @@
     width: 100%;
     height: 100%;
     transform: scale(0.12);
-    transform-origin:bottom right;
+    transform-origin: bottom right;
 }
 
-.slide.evtExample{
+.slide.evtExample {
     border: solid 10px grey;
     /* pointer-events: none;*/
     /* opacity: 0; */
@@ -47,10 +48,10 @@
     width: 100%;
     height: 100%;
     transform: scale(0.74);
-    transform-origin:bottom right;
+    transform-origin: bottom right;
 }
 
-.slides.example > section{
+.slides.example > section {
 
 }
 
@@ -108,7 +109,7 @@
 
 .slide > div.big {
     grid-column: 1/6;
-    grid-row: 4;
+    grid-row: 3/4;
     text-align: center;
 
 }
@@ -116,18 +117,17 @@
 .slide > div.big > h2 {
     font-size: 80px;
     font-weight: bold;
-   /*
-    color: white;
-   text-shadow:
-            -1px -1px 0 #000,
-            1px -1px 0 #000,
-            -1px 1px 0 #000,
-            1px 1px 0 #000;
-    */
+    /*
+     color: white;
+    text-shadow:
+             -1px -1px 0 #000,
+             1px -1px 0 #000,
+             -1px 1px 0 #000,
+             1px 1px 0 #000;
+     */
 }
 
-
-.slide > img.big  {
+.slide > img.big {
     width: 100%;
     grid-column: 1/6;
     grid-row: 2/4;
@@ -141,4 +141,12 @@
 
 .slides > .background {
 
+}
+
+img.filler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100%;
+    min-width: 100%;
 }

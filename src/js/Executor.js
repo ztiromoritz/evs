@@ -40,19 +40,17 @@ export default class Executor {
 
   }
 
-
-
   /**
    * @param {String} actorCode
    */
   static handleEvent(actorCode, event, state){
     const code = `(function(){var onEvent=null; var onCommand=null; ${actorCode}; return {onEvent, onCommand};})();`;
-    console.log(code);
     const context = {
         fun : fun,
         $ : fun.parameter,
         _ : fun.wildcard,
         console : console,
+        log : (msg)=>{console.log('%c %s', 'background: #222; color: #bada55', JSON.stringify(msg,null,2));},
         inc : (value) => _ => (_ || 0) + value,
         dec : (value) => _ => (_||0) - value
     };

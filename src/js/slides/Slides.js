@@ -45,12 +45,12 @@ new Vue({
   methods: {
     next() {
       this.current = (this.current + 1) % this.slides.length;
-      this.example = (this.slides[this.current].example);
+      this.example = true;//(this.slides[this.current].example);
       window.location.hash = this.current;
     },
     prev() {
       this.current > 0 && this.current--;
-      this.example = (this.slides[this.current].example);
+      this.example = true;//(this.slides[this.current].example);
       window.location.hash = this.current;
     },
     onClick(e) {
@@ -64,7 +64,6 @@ new Vue({
     }
   },
   created: function () {
-    console.log(html());
 
     this.current = getHash() || 0;
     console.log("hash",window.location.hash);

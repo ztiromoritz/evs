@@ -3,6 +3,7 @@ import Settings from '../Settings';
 import InternalEvents from '../InternalEvents';
 
 import eventList from './EventList';
+import currentState from '../CurrentState';
 
 
 Vue.component('exampleSettings', {

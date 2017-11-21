@@ -3,6 +3,7 @@ import Vue from 'vue';
 import InternalEvents from '../InternalEvents';
 
 const localStorageKey = 'evs-examples';
+const localStorageCurrentExample = 'evs-current-example';
 
 export default new Vue({
   el: '#example',
@@ -30,21 +31,34 @@ export default new Vue({
     onShowSettings() {
       this.showSettings = true;
     },
-    onHideSettings(){
+    onHideSettings() {
       this.showSettings = false;
       //Todo StoreSettings
     },
-    getName(){
-      if(this.selected >= 0){
+    getName() {
+      if (this.selected >= 0) {
         return this.examples[this.selected];
       }
       return "Default Settings";
     },
     store() {
       localStorage.setItem(localStorageKey, JSON.stringify(this.examples));
+      localStorage.setItem(localStorageCurrentExample, this.selected);
     },
     load() {
       this.examples = JSON.parse(localStorage.getItem(localStorageKey) || '[]');
+      this.selected = -1;
+      const current = localStorage.getItem(localStorageCurrentExample);
+      if (current
+        && !Number.isNaN(current)
+        && Number.parseInt(current) >= 0
+        && Number.parseInt(current) < this.examples.length) {
+        this.selected = current;
+      }
+      InternalEvents.exampleChanged(this.examples[this.selected]);
+    },
+    emitState(){
+      InternalEvents.exampleChanged(this.examples[this.selected]);
     },
     change(e) {
       const value = e.target.value;
@@ -56,6 +70,7 @@ export default new Vue({
         InternalEvents.exampleChanged(this.examples[newIndex]);
       } else if (value >= 0) {
         InternalEvents.exampleChanged(this.examples[value]);
+        this.store();
       }
     }
   },

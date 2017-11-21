@@ -58,10 +58,16 @@ export default Vue.component('event', {
     }
   },
   methods: {
-    moveShadowFromEventTo: function (target) {
-      const source_rect = this.$refs['node'].getBoundingClientRect();
-      const source = [source_rect.left, source_rect.top, source_rect.width, source_rect.height];
-      return moveShadow(source, target);
+    moveShadowFromEventTo: function ($target) {
+      if($target){
+        const target_rect = $target.getBoundingClientRect();
+        const target = [target_rect.left, target_rect.top, target_rect.width, target_rect.height];
+        const source_rect = this.$refs['node'].getBoundingClientRect();
+        const source = [source_rect.left, source_rect.top, source_rect.width, source_rect.height];
+        return moveShadow(source, target);
+      }else{
+        return Promise.resolve();
+      }
     }
   },
   mounted: function () {

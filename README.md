@@ -1,50 +1,63 @@
 # EVS
 An event sourcing simulator
 # TODO/IDEAS
+ - [ ] Filter: ()=>{}
+ - [ ] OnCommand: ()=>{}
+ - [ ] InitState: ()=>{}
+ - [ ] Event Pointer Per tab/usr
+ - [ ] Reset State/Event Pointer
+ - [ ] Commands: Button size
+ - [ ] Settings: Blend out User Dropdown in command
+ - [ ] Debugger above event store
+ - [ ] Tabs State
+ - [ ] Layout: Icons in debugger ???
+ - [ ] Snapshot visual
+ - [ ] Two states: events only, events&commands ()
+ - [ ] Clear: should reset more: current, state 
+ - [ ] side effect demo: send mails
+ - [ ] left fold
+ - [ ] Create meaningfull examples
+ - [ ] Icons remove 
+ - [ ] Load file    
+ - [ ] firebase without slides/ no static is ja schon
+ - [x] firebase deployment
  - [x] Unify Eventstore and EventList = Drop Event List
  - [x] Layout: Events in line with editor
- - [ ] Hide View completely
+ - [x] Hide View completely
  - [x] Button distance
  - [x] Remove: Clear Event store
- - [ ] Commands: Button size
  - [x] Settings
  - [x] Settings: Actors: Global, Alice&Bob
- - [ ] Settings: Blend out User Dropdown in command
  - [x] Settings: ShowView
  - [x] Settings: ShowActor
  - [x] Alice/Bob round icons
- - [ ] Hide Tab if there is only one Actor in example
- - [ ] Debugger above event store
- - [ ] Layout: Icons in debugger
- - [ ] Global Dropdown. Example
- - [ ] Internal Event System for Communication/CustomEvents
- - [ ] Tabs
+ - [x] Hide Tab if there is only one Actor in example
+ - [x] Global Dropdown. Example
+ - [x] Internal Event System for Communication/CustomEvents
+ - [x] Tabs
  - [x] EXAMPLE_CHANGED Event
  - [x] TAB_CHANGED Event
- - [ ] Tabs State
- - [ ] Tab: Create New
- - [ ] Commands.js addCommand in app.js ???
- - [ ] Filter events
+ - [x] Tab: Create New (Not implemented)
+ - [x] Commands.js addCommand in app.js ???
  - [x] Update view when state.history is present
- - [ ] Reset State/Event Pointer
- - [ ] Snapshot visual
- - [ ] Fruitshop/PetShop
- - [ ] animated system crash/Screenshake
- - [ ] Two states: events only, events&commands
- - [ ] side effect demo: send mails
- - [ ] project in localStorage
+ - [x] Fruitshop/PetShop (Not implemented)
+ - [x] animated system crash/Screenshake (Not implemented)
+ - [x] project in localStorage
  - [x] evaluate/sandbox??
- - [ ] Clear: should reset more: current, state 
- - [ ] Scalability: an writing actor several reading actors
+ - [x] Scalability: an writing actor several reading actors
         (user-actor, overall statistic actor)
- - [ ] left fold
  - [x] Persist EventStore
- - [ ] Button Clear event store
- - [ ] Current Event is stored in the debugger, not in the EventStore/(but should be visualized there as well)
- - [ ] Storage and RAM icon at Store and State
- - [ ] Command with Variable Field
- - [ ] Command with user selector
+ - [x] Button Clear event store
+ - [x] Current Event is stored in the debugger, not in the EventStore/(but should be visualized there as well)
+ - [x] Storage and RAM icon at Store and State
+ - [x] Command with Variable Field
+ - [x] Command with user selector
  
+# TODO: Slides 
+ - [ ] left fold
+ - [ ] RepositoryViewer 2 Screenshots
+ - [ ] Good for debugging -> now payin but package send??? check events
+ - [ ] Local is fun
  
 # Links
  * https://ace.c9.io

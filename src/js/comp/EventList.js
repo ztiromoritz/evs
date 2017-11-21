@@ -59,10 +59,16 @@ export default new Vue({
   created(){
     this.localStorageKey = 'evs-event-store';
     this.load();
+
+
     InternalEvents.subscribeOnExampleChanges(({name})=>{
       console.log("Receive",name);
       this.localStorageKey = `evs-event-store-${name}`;
       this.load();
-    })
+    });
+
+    InternalEvents.subscribeOnStateChanged(({state,current})=>{
+      this.setCurrent(current);
+    });
   }
 });

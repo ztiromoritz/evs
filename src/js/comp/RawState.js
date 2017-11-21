@@ -1,11 +1,11 @@
 import Vue from 'vue';
-import stringify from "json-stringify-pretty-compact";
 import Settings from '../Settings';
 import InternalEvents from '../InternalEvents';
 
+var i = 0;
 export default new Vue({
   el: '#state',
-  template : `<div id="state" class="card" v-if="this.showState">
+  template: `<div id="state" class="card" v-if="this.showState">
                 <b>State</b>
                 <pre>{{this.getString()}}</pre>
                 <div class="card-icon">
@@ -13,23 +13,32 @@ export default new Vue({
                 </div>
               </div>`,
   data: {
-    value : {},
-    showState : false
+    value: {},
+    showState: false
   },
   methods: {
-    getString : function(){
-     return JSON.stringify(this.value);
-      // return stringify(this.value, {maxLength: 80, indent: 1});
+    getString: function () {
+      return JSON.stringify(this.value);
     },
-    setExample(name){
+    setExample(name) {
       const {showState} = Settings.getSettings(name);
       this.showState = showState;
     }
   },
-  created(){
-    InternalEvents.subscribeOnExampleChanges(({name})=>{
+  created() {
+    InternalEvents.subscribeOnExampleChanges(({name}) => {
       this.setExample(name);
     });
+
+    InternalEvents.subscribeOnTabChanges(({name}) => {
+
+    });
+
+    InternalEvents.subscribeOnStateChanged(({state}) => {
+      //visual hack
+      setTimeout(()=>{this.value = state;},0);
+
+    })
   }
 
 });

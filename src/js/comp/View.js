@@ -54,5 +54,9 @@ export default new Vue({
     InternalEvents.subscribeOnExampleChanges(({name}) => {
       this.setExample(name);
     });
+
+    InternalEvents.subscribeOnStateChanged(({state}) => {
+      this.value = state;
+    })
   }
 });
