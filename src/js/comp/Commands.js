@@ -7,9 +7,8 @@ const commands = new Vue({
   template: `<div id="commands" class="card">
                 <b>Commands</b>
                 <div class="columns">
-                <div class="column col-12">  
                     <button class="btn btn-primary btn-custom btn-sm" v-for="command in commands" v-on:click="command.execute">{{command.caption}}</button>
-                </div>
+               
                 </div>
                 
                 <form class="form-horizontal">
@@ -41,42 +40,45 @@ const commands = new Vue({
   data: {
     current: 0,
     amount: 11,
-    user:'',
-    enableUser : false,
+    user: '',
+    enableUser: false,
     commands: [
       {
-        caption: "Pay out", execute: (e) => {
-        const newEvent = {
-          type: 'PAYED_OUT',
-          amount: commands.amount,
-          user: commands.user,
-          caption: `PAYED_OUT ${commands.amount}€`,
-        };
-        commands.eventList.addEvent(Object.assign({}, newEvent, {source: [e.pageX, e.pageY]}));
-        }
-      },
-      {
-        caption: "Pay in", execute: (e) => {
-          const newEvent = {
-            type: 'PAYED_IN',
-            amount: commands.amount,
+        caption: "Pay in",
+        execute: (e) => {
+          const command = {
+            type: 'PAY_IN',
+            amount: Number.parseInt(commands.amount),
             user: commands.user,
             caption: `PAYED_IN ${commands.amount}€`,
           };
-          commands.eventList.addEvent(Object.assign({}, newEvent, {source: [e.pageX, e.pageY]}));
+          commands.onCommand(command, e);
+        }
+      },
+      {
+        caption: "Pay out",
+        execute: (e) => {
+          const command = {
+            type: 'PAY_OUT',
+            amount: Number.parseInt(commands.amount),
+            user: commands.user,
+            caption: `PAYED_OUT ${commands.amount}€`,
+          };
+          commands.onCommand(command, e);
         }
       }
     ],
-    eventList: null
+    eventList: null,
+    onCommand: () => {},
   },
-  methods : {
-    setExample(name){
+  methods: {
+    setExample(name) {
       const {enableUser} = Settings.getSettings(name);
       this.enableUser = enableUser;
     }
   },
-  created(){
-    InternalEvents.subscribeOnExampleChanges(({name})=>{
+  created() {
+    InternalEvents.subscribeOnExampleChanges(({name}) => {
       this.setExample(name);
     });
   }

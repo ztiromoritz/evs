@@ -4,16 +4,18 @@ import _eval from 'safe-eval';
 
 
 const onCommandDefault = (context) => {
-  return (command, state, eventStore) => {
+  return (command, state, persist) => {
+    console.log("onCommandDefaultIsCalled");
     return {
-      'PAY_IN': ()=> eventStore.push({type: 'PAYED_IN' }),
+      'PAY_IN': ()=> {
+        const event = context.copy(command);
+        event.type = 'PAYED_IN';
+        persist(event);
+      },
       'PAY_OUT' : ()=> {
-        if(state.balance >= command.amount){
-
-          eventStore.push({type: 'PAYED_OUT', amount: command.amount});
-        }else{
-
-        }
+        const event = context.copy(command);
+        event.type = 'PAYED_OUT';
+        persist(event);
       }
     }[command.type]();
   };
@@ -32,37 +34,77 @@ const onEventDefault = (context) =>{
 
 
 
+const getCode = (actorCode) => {
+  return `(function(){
+      var onEvent=null; 
+      var onCommand=null;
+      var filter = ()=>{return true;};
+      var initialState = {}; 
+      ${actorCode}; 
+      return {
+        onEvent, 
+        onCommand,
+        initialState,
+        filter
+      };
+     })();`;
+};
+
+const getContext = ()=>{
+  return {
+    fun : fun,
+    $ : fun.parameter,
+    _ : fun.wildcard,
+    console : console,
+    log : (msg)=>{console.log('%c %s', 'background: #222; color: #bada55', JSON.stringify(msg,null,2));},
+    inc : (value) => _ => (_ || 0) + value,
+    dec : (value) => _ => (_||0) - value,
+    sendMail : (msg) => { console.log("send mail"); new Notification("You have a mail", {body: msg}); },
+    copy : (obj) => Object.assign({},obj)
+  };
+};
+
+const getActor = (actorCode)=>{
+  const code = getCode(actorCode);
+  const context = getContext();
+  return _eval(code, context);
+};
+
 
 export default class Executor {
 
-
-  static handleCommand(actorCode, command, state, eventStore){
-
+  static handleCommand(actorCode, command, state, persist){
+    const actor = getActor(actorCode);
+    console.log("actor.onCommand", actor.onCommand);
+    if(!actor.onCommand){
+      actor.onCommand = onCommandDefault(getContext());
+    }
+    actor.onCommand(command, Object.freeze(state), persist);
   }
+
+  static filter(actorCode,event){
+    const actor = getActor(actorCode);
+    return actor.filter(event);
+  }
+
+
+  static getInitialState(actorCode){
+    const actor = getActor(actorCode);
+    return Object.assign({},actor.initialState);
+  }
+
 
   /**
    * @param {String} actorCode
    */
   static handleEvent(actorCode, event, state){
-    const code = `(function(){var onEvent=null; var onCommand=null; ${actorCode}; return {onEvent, onCommand};})();`;
-    const context = {
-        fun : fun,
-        $ : fun.parameter,
-        _ : fun.wildcard,
-        console : console,
-        log : (msg)=>{console.log('%c %s', 'background: #222; color: #bada55', JSON.stringify(msg,null,2));},
-        inc : (value) => _ => (_ || 0) + value,
-        dec : (value) => _ => (_||0) - value
-    };
-    const actor = _eval(code, context);
-    if(!actor.onCommand){
-      actor.onCommand = onCommandDefault(context)
-    }
-    console.log('actor',  actor);
+      const actor = getActor(actorCode);
+
 
     if(typeof actor['onEvent'] === 'function'){
       return actor.onEvent(event,state);
     }
     return state;
   }
+
 }

@@ -24,6 +24,7 @@ import debug from './js/comp/Debugger';
 import editorButtons from './js/comp/EditorButtons';
 
 import currentState from './js/CurrentState';
+import InternalEvents from './js/InternalEvents';
 
 const editor = new Editor(document.querySelector('#editorPane'));
 
@@ -34,7 +35,7 @@ currentState.emit();
 
 const fadeOutShadow = function ($shadow) {
 
-  if(!$shadow){
+  if (!$shadow) {
     return Promise.resolve();
   }
   return new Promise(resolve => {
@@ -49,11 +50,25 @@ const fadeOutShadow = function ($shadow) {
   });
 };
 
+const addFilteredMessage = function ($shadow) {
+
+  if (!$shadow) {
+    return Promise.resolve();
+  }
+
+  return new Promise(resolve => {
+    $shadow.classList.add('filtered');
+    setTimeout(() => {
+
+      resolve($shadow);
+    }, 400);
+  });
+
+};
+
 
 //let state = {};
 //let current = 0;
-
-commands.eventList = eventList;
 
 
 const consumeNextEvent = function () {
@@ -74,19 +89,43 @@ const consumeNextEvent = function () {
     const eventComponent = eventList.getComponent(current);
     const event = eventList.getEvent(current);
 
-    // visual transform and emit effect
-    eventComponent
-      .moveShadowFromEventTo($state)
-      .then(fadeOutShadow)
-      .then(() => { currentState.emit(); });
-      //.then(() => { eventList.setCurrent(currentState.current); });
+    let newState = Object.assign({}, state);
+
+    if (current === 0 && state === null) {
+      newState = executor.getInitialState(editor.getValue());
+    }
+
+    if (executor.filter(editor.getValue(), event)) {
+      // visual transform and emit effect
+      eventComponent
+        .moveShadowFromEventTo($state)
+        .then(fadeOutShadow)
+        .then(() => { currentState.emit(); });
+      newState = executor.handleEvent(editor.getValue(), event, newState);
+    } else {
+      eventComponent
+        .moveShadowFromEventTo($state)
+        .then(addFilteredMessage)
+        .then(fadeOutShadow)
+        .then(() => { currentState.emit();})
+    }
+
 
     // data transform
     return {
-      state: executor.handleEvent(editor.getValue(), event, state),
+      state: newState,
       current: current + 1
     }
   });
+};
+
+
+commands.onCommand = (command, e) => {
+  const persist = (event) => {
+    const newEvent = Object.assign({}, event, {source: [e.pageX, e.pageY]});
+    eventList.addEvent(newEvent);
+  };
+  executor.handleCommand(editor.getValue(), command, currentState.state, persist);
 };
 
 debug.addCommand({
@@ -94,10 +133,12 @@ debug.addCommand({
   execute: consumeNextEvent
 });
 
+
 debug.addCommand({
   caption: 'Reset current state',
-  execute : () => currentState.clear()
+  execute: () => { currentState.clear();}
 });
+
 
 editorButtons.addCommand({
   caption: 'ff',
@@ -118,6 +159,5 @@ editorButtons.addCommand({
 editor.format();
 
 
-//Fake mail
-//var notification = new Notification("You have a mail",{body: "Hey there! You've been notified!"});
+
 

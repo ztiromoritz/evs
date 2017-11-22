@@ -3,7 +3,8 @@ const DEFAULT_SETTINGS = {
   showView: false,
   showEditor: false,
   showCommands: false,
-  showState: false
+  showState: false,
+  showDebugger: false
 };
 
 class Settings {

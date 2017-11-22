@@ -31,26 +31,24 @@ const Key = {
 
 new Vue({
   el: '#slides',
-  template: `<div  v-on:click="onClick" id="slides" class="slides"  v-bind:class="{example: example}">
-                <slide v-for="(slide, index) in slides" 
-                v-html="slide.content" 
-                class="slide" 
-                v-bind:class="{ current: index === current , seen: index < current ,hidden: index > current}"></slide>
-             </div>`,
+  template: ``,
   data: {
     current: 0,
     example: false,
+    bigExample : false,
     slides: []
   },
   methods: {
     next() {
       this.current = (this.current + 1) % this.slides.length;
-      this.example = true;//(this.slides[this.current].example);
+      this.example = (this.slides[this.current].example);
+      this.bigExample = (this.slides[this.current].bigExample);
       window.location.hash = this.current;
     },
     prev() {
       this.current > 0 && this.current--;
-      this.example = true;//(this.slides[this.current].example);
+      this.example = (this.slides[this.current].example);
+      this.bigExample = (this.slides[this.current].bigExample);
       window.location.hash = this.current;
     },
     onClick(e) {
@@ -74,7 +72,8 @@ new Vue({
     this.slides = $$('section', doc).map((section) => {
       return {
         content: section.innerHTML,
-        example: (typeof section.dataset.example !== 'undefined')
+        example: (typeof section.dataset.example !== 'undefined'),
+        bigExample: (typeof section.dataset.bigExample !== 'undefined')
       }
     });
 

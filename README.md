@@ -1,25 +1,27 @@
 # EVS
 An event sourcing simulator
 # TODO/IDEAS
- - [ ] Filter: ()=>{}
- - [ ] OnCommand: ()=>{}
- - [ ] InitState: ()=>{}
- - [ ] Event Pointer Per tab/usr
- - [ ] Reset State/Event Pointer
- - [ ] Commands: Button size
- - [ ] Settings: Blend out User Dropdown in command
- - [ ] Debugger above event store
- - [ ] Tabs State
- - [ ] Layout: Icons in debugger ???
- - [ ] Snapshot visual
- - [ ] Two states: events only, events&commands ()
- - [ ] Clear: should reset more: current, state 
- - [ ] side effect demo: send mails
- - [ ] left fold
- - [ ] Create meaningfull examples
- - [ ] Icons remove 
+ - [x] Button Layout
+ - [ ] think about filter for onCommand
+ - [x] OnCommand: ()=>{}
+ - [ ] --- nice to have ---
  - [ ] Load file    
  - [ ] firebase without slides/ no static is ja schon
+ - [ ] view is broken
+ - [ ] Snapshot visual
+ - [x] Filter: ()=>{}
+ - [x] Two states: events only, events&commands ()
+ - [x] InitState: ()=>{}
+ - [x] Event Pointer Per tab/usr
+ - [x] Reset State/Event Pointer
+ - [x] Commands: Button size
+ - [x] Settings: Blend out User Dropdown in command
+ - [x] Debugger above event store
+ - [x] Tabs State
+ - [x] Layout: Icons in debugger ???
+ - [x] Clear: should reset more: current, state 
+ - [x] left fold
+ - [x] Icons remove  ????
  - [x] firebase deployment
  - [x] Unify Eventstore and EventList = Drop Event List
  - [x] Layout: Events in line with editor
@@ -53,12 +55,21 @@ An event sourcing simulator
  - [x] Command with Variable Field
  - [x] Command with user selector
  
+# TODO: Examples
+ - [ ] Simple
+ - [ ] Commands 
+ - [ ] Commands + validation
+ - [ ] Events + Side effect Mail
+ - [ ] Commands + Side effect Mail
+ - [ ] Validation: Deny send mail, DENY_EVENT, Rate customer
 # TODO: Slides 
  - [ ] left fold
  - [ ] RepositoryViewer 2 Screenshots
  - [ ] Good for debugging -> now payin but package send??? check events
  - [ ] Local is fun
- 
+ - [ ] Survive a System crash
+ - [ ] Image: Snapshots as async job
+ - [ ] Further Readings
 # Links
  * https://ace.c9.io
  * http://www.edc4it.com/blog/web/webpack-tutorial.html

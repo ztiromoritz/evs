@@ -4,7 +4,7 @@ import InternalEvents from './InternalEvents';
 class CurrentState {
   constructor() {
     this.current = 0; //current event from store
-    this.state = {};
+    this.state = null;
 
     this.example = 'Default';
     this.user = 'Default';
@@ -24,9 +24,11 @@ class CurrentState {
   }
 
 
+
+
   clear(){
     this.current = 0; //current event from store
-    this.state = {};
+    this.state = null;
     this.store();
     this.emit();
   }
@@ -65,6 +67,7 @@ class CurrentState {
   }
 
   transform(f) {
+
     if (typeof(f) === 'function') {
       const {state, current} = f({state: this.state, current: this.current});
       this.state = state;

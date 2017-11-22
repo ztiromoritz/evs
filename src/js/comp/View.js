@@ -14,7 +14,7 @@ export default new Vue({
               </div>`,
   data: {
     value: {},
-    showView: false
+    showView: true
   },
   methods: {
     setExample(name) {

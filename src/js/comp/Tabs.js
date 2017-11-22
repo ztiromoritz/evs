@@ -5,7 +5,7 @@ import Users from './Users';
 
 export default new Vue({
   el: '#tabs',
-  template : `<div id="tabs" v-if="this.enableUser">
+  template: `<div id="tabs" v-if="this.enableUser">
                <ul class="tab tab-block">
                   <li v-for="user in allUsers" class="tab-item" :class="{active: user.name === active}">
                         <a href="#" @click="changeUser(user.name)">
@@ -19,50 +19,53 @@ export default new Vue({
               </ul>
               </div>`,
   data: {
-    enableUser : false,
+    enableUser: false,
     active: 'Default'
   },
-  computed : {
-    allUsers : ()=> {
+  computed: {
+    allUsers: () => {
       return Object.entries(Users)
         .map(([name, data]) => Object.assign({}, data, {name}));
     }
   },
   methods: {
-    setExample(name){
+    setExample(name) {
       const {enableUser} = Settings.getSettings(name);
       this.enableUser = enableUser;
+      if (!enableUser) {
+        this.active = 'Default';
+        InternalEvents.tabChanged('Default');
+      }
     },
-    changeUser(name){
+    changeUser(name) {
       console.log("Change user", name);
       this.active = name;
       InternalEvents.tabChanged(name);
     },
-    iconClass(name){
+    iconClass(name) {
       const className = Users[name] && Users[name].iconClass;
-      if(className) {
+      if (className) {
         const result = {};
         result[className] = true;
         return result;
       }
       return {};
     },
-    circleClass(name){
+    circleClass(name) {
       const className = Users[name] && Users[name].bgClass;
-      if(className) {
+      if (className) {
         const result = {};
         result[className] = true;
         return result;
       }
       return {};
     },
-    emitState(){
+    emitState() {
       InternalEvents.tabChanged(this.active);
     }
   },
-  created(){
-
-    InternalEvents.subscribeOnExampleChanges(({name})=>{
+  created() {
+    InternalEvents.subscribeOnExampleChanges(({name}) => {
       this.setExample(name);
     });
   }

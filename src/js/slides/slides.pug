@@ -1,200 +1,342 @@
+section
+  div.full
+    h2 Event Sourcing
+
+section
+  div.full
+    h2 An overview
+    img.full(src="static/overview.jpeg")
+
+
+
+
+section(data)
+  h1 Active Record
+  div.left
+    ul
+      li CRUD operations for domain objects
+      li Current state in database
+      li Advanced OR-Mapping
+      li Binding value
+      li Sometimes a last changed field
+      li Sometimes a deleted flag
+  div.right
+    img(src="static/activeRecord.svg", width="60%")
+
+section
+  div.big
+    h2 Is this, how we do it in FirstSpirit ?
+
+section
+  h1 Let's have a look
+  div.left
+    img(src="static/think2.jpg")
+
+  div.right
+    <br>
+    <br>
+    img.bottom(src="static/RepositoryViewer2.png", width="100%")
+
+section
+  h1 Let's have a look
+  div.left
+    img(src="static/think2.jpg")
+
+  div.right
+    <br>
+    <br>
+    img.bottom(src="static/RepositoryViewer.png", width="100%")
+
+section
+  h1 Let's have a look
+  div.left
+    img(src="static/think2.jpg")
+  div.right
+    ul
+      li Revisions
+      li Generate Released
+      li Generate Current
+
+section
+  h1 Let's have a look
+  div.left
+    img(src="static/think2.jpg")
+  div.right
+    ul
+      li Only write changes
+      li Never delete
+      li Never change existing values
+
+section
+  h1 Let's have a look
+  div.left
+    img(src="static/think2.jpg")
+  div.right
+    ul
+      li Only write changes
+      li Never delete
+      li.strike Never change existing values
+      li Rarely change existing values
+
+section
+  h1 Let's have a look
+  div.left
+    img(src="static/think2.jpg")
+  div.right
+    span Build a page store node
+    ul
+      li Search backwards
+      li Collect values
+
+
+section
+  h1 Other examples
+  div.big
+    br
+    br
+    br
+    br
+    h2
+      i.fa.fa-code-fork
+      span &nbsp; GIT, SVN
+    h2
+      i.fa.fa-book
+      span &nbsp; DMS
+
+
+
+
+section
+  div.big
+    h2 Can we do more than just content, documents or source control?
+
+
+section
+  div.full
+    img.full(src="static/logfile.gif")
+    br
+    br
+    h2.pink Logfiles
+
+section
+  div.big
+    h2 Let's assume we log everything
+    h2 that is "important"
+
+section(data-big-example)
+  div.big
+    h2 Let's assume we log everything
+    h2 that is "important"
+    span.grey
+      i Example 0
+
+section(data-big-example)
+  div.big
+    h2 But what is my current balance now?
+
+section(data-big-example)
+  div.big
+    h2 But what is my current balance now?
+    span.grey
+      i (Example 0 enable debugger, state, editor)
+
+section(data-big-example)
+  div.big
+    h2 How does this work?
+
 section(data-example)
-    div.big
-        h2 Event Sourcing
-//section
-    //h1 Event Sourcing 1
-    //div.main
-      //  ul
-      //      li CQRS
-      //      li Fpp
-        //img(src="static/bttf.gif")
-
+  div.big
+    h2 How does this work?
 
 
 
 section
-    h1 Active Record
-    div.left
-        ul
-            li CRUD operations for domain objects
-            li Current state in database
-            li Advanced OR-Mapping
-            li Binding value
-            li sometimes a last changed field
-            li sometimes a deleted flag
-    div.right
-        img(src="static/activeRecord.svg", width="60%")
+  h1 How does this work?
+  div.main
+    ul
+      li Persitent stream of events
+      li State in memory
+      li Handler to create state
 
 section
-    div.big
-        h2 Is this, how we do it in FirstSpirit ?
-    //img.big (src="static/think2.jpg")
-
-section
-    h1 Let's have a look
-    div.left
-        img(src="static/think2.jpg")
-
-section
-    h1 Let's have a look
-    div.left
-        img(src="static/think2.jpg")
-
-    div.right
-        b TODO: screenshot of RepositoryViewer
-
-section
-    h1 Let's have a look
-    div.left
-        img(src="static/think2.jpg")
-    div.right
-        ul
-            li Generate Released
-            li Generate Current
-            li Revisions
-
-section
-    h1 Let's have a look
-    div.left
-        img(src="static/think2.jpg")
-    div.right
-        h2 But, how???
-
-section
-    h1 Let's have a look
-    div.left
-        img(src="static/think2.jpg")
-    div.right
-        ul
-            li Only write changes
-            li Never delete
-            li Never change existing values
-
-section
-    h1 Another example
-    div.main
-        ul
-            li CVS
-            li SVN
-            li GIT
-
-section
-    div.big
-        h2 Can we do more than just content or source control?
-        h2 ---> TODO: Build our complete Persistence of the demain model based on this.
-        h2 Events
-
-section
-    h1 Compare
-    div.left
-        span Account in Active Record
-    div.right
-        span List of Events
+  h1 How does this work?
+  div.main
+    ul
+      li Different handlers possible
+      li Setup phase (recover)
+      li Consume new "events"
 
 
 section
-    h1 Demo 1
-    div.main
-        ul
-            li only Events, no users
-
-
-section
-    h1 Events
-    div.left
-        img(src="static/fakten.jpg", width="100%")
-
-section
-    h1 Events
-    div.left
-        img(src="static/fakten.jpg", width="100%")
-    div.right
-        span Events are:
-        br
-        i "Fakten, Fakten, Fakten!"
-        br
-        i "Facts, Facts, Facts!"
-        br
-        br
-        span ... single source of truth
-        br
-        br
-        span ... immutable in order and value
-
-
-
-section
-    h1 Next 4
+  h1 Events vs Commands
+  div.main
+    ul
+      li Events can be consumed again and again
+      li What about side effects
 
 section(data-example)
-    h1 DEMO
-
-section
-    h1 Commands vs Events
-        ul
-            li Commands will be executed once
-            li Commands create side effects
-        ul
-            li Events are immutable
-            li
-
-section
-    h1 Snapshot
-        ul
-            li
+  div.full
+    h2 What about side effects?
+    h2.grey
+      i (Example 1 + 2)
 
 
 section
-    h1 Event "Bus"
-    div.left
-            img(src="static/busCat.gif", width="100%")
-    div.right
-        ul
-            li Components share event store
-            li Subscription
-            li But no consumption
-            li Start from scratch
+  h1 Events vs Commands
+  div.left
+    ul
+      li Events are facts
+      li Events can be consumed again and again
+  div.right
+    ul
+      li Commands are interactions
+      li Command will be handled once
+      li Commands create Events
+      li Commands can do validation
 
 
 section
-    div.big
-        h2 Start from scratch ...
-        img(src="static/hmm.png")
-        h2 ...  but what about performance
-section
-    h1 Snapshots and recovery
+  h1 Events
+  div.left
+    img(src="static/fakten.jpg", width="100%")
 
 section
-    h1 Complexity
-    div.main
-        img(src="static/complexity.svg", height="100%")
+  h1 Events
+  div.left
+    img(src="static/fakten.jpg", width="100%")
+  div.right
+    span Events are:
+    br
+    i "Fakten, Fakten, Fakten!"
+    br
+    i "Facts, Facts, Facts!"
+    br
+    br
+    span ... single source of truth
+    br
+    br
+    span ... immutable in order and value
+
 
 section
-    h1 Scalability
-    div.main
-        img(src="static/scalability.svg", height="100%")
+  div.full
+    h2 Commands: Validation
+
+section(data-example)
+  div.full
+    h2 Commands: Validation
+    h2.grey Example 3
 
 
 section
-    h1 "What's cool about that"
-    div.main
-        ul
-            li
+  h1 Heterogeneity
+  div.main
+    img(src="static/complexity.svg", height="100%")
+
+
+
+section(data-example)
+  h1 Heterogeneity
+  div.main
+    img(src="static/complexity.svg", height="100%")
+
 
 section
-    h1 Challenges
-    div.left
-        ul
-            li Events create Commands
-            li Commands create Events
-            li Event Driven vs Record Drive
-
-    div.right
-        img(src="static/hermione.png", width="100%")
+  h1 Heterogeneity
+  div.main
+    img(src="static/complexity.svg", height="100%")
 
 section
-    div.main
-        h2 Examples: https://evss-87e09.firebaseapp.com
+  h1 Scalability
+  div.main
+    img(src="static/scalability.svg", height="100%")
+
+section(data-example)
+  h1 Scalability
+  div.main
+    img(src="static/scalability.svg", height="100%")
+
+section
+  h1 Scalability
+  div.main
+    img(src="static/scalability.svg", height="100%")
+
+section
+  h1 Compare
+  div.left
+    span Active record
+    <br>
+    img(src="static/activeRecord.svg", width="60%")
+  div.right
+    span Events store
+    <br>
+    img(src="static/eventStore.png", width="100%")
+
+
+section
+  h1 Event "Bus"
+  div.left
+    img(src="static/busCat.gif", width="100%")
+  div.right
+    ul
+      li Components share event store
+      li Subscription
+      li But no consumption
+      li Components start from scratch
+
+
+section
+  div.big
+    h2 Start from scratch ...
+    img(src="static/hmm.png")
+    h2 ...  but what about performance
+
+section
+  div.full
+    h2.pink Snapshots
+    img.full(src="static/snapshot.gif")
+
+
+section(data-example)
+  div.full
+    h2.pink Snapshots
+    img.full(src="static/snapshot.png")
+
+
+
+section
+  h1 What's cool about that
+  div.main
+    ul
+      li Scalability
+      li Heterogeneity
+      li Debugging & Validation
+      li Local problems
+      li -> FP, pure functions
+      li Decouple write from read
+
+section
+  h1 Challenges
+  div.left
+    ul
+      li New and different mindset
+      li Events create commands
+      li Commands create events
+      li Eventual persitency
+      li Virtual synchronization
+      li Migration and legacy
+      li Not for all problems
+
+
+  div.right
+    img(src="static/hermione.png", width="100%")
+
+section
+  div.full
+    h2 Thanks for your time!
+    h2 https://evss-87e09.firebaseapp.com
+    h2 https://github.com/ztiromoritz/evs
+    img.full(src="static/overview.jpeg")
 
 
 //deleted-flag als beispiel
